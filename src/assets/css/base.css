@@ -1,0 +1,30 @@
+@import "./normalize.css";
+
+:root {
+  --color-text: #666;
+  --color-high-text: #ff5777;
+  --color-tint: #ff8198;
+  --color-background: #fff;
+  --font-size: 14px;
+  --line-height: 1.5;
+}
+
+*,*::before,*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+body {
+  font-family: Arial, Helvetica, "微软雅黑", sans-serif;
+  user-select: none; /* 禁止用户选中文字图片等*/
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--color-background);
+  color: var(--color-text);
+ }
