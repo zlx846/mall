@@ -28,7 +28,5 @@ export default {
 </script>
 
 <style>
-  #hy-swiper {
-    margin-top: 44px;
-  }
+
 </style>
