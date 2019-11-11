@@ -2,8 +2,16 @@ import { request } from './request'
 
 export function getHomeMultiData() {
   return request({
-    baseConfig: {
-      url: '/home/multidata'
+    url: '/home/multidata',
+  })
+}
+
+export function getHomeGoods(type, page) {
+  return request({
+    url: '/home/data',
+    params: {
+      type,
+      page
     }
   })
 }
