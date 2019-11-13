@@ -1384,27 +1384,37 @@ Server.on('request', function (request, response) {
       "Content-Type": "application/json;text/plain"
     })
 
+    const list = {
+      "list": []
+    }
     const type = JSON.stringify(params.type)
+    const page = params.page
     if (type == '"pop"') {
+      // 发送流行数据
       try {
+        list.list = homeDataPop.list.splice((page - 1)* 30, page * 30)
+        response.write(JSON.stringify(list))
         console.log('发送homeData成功')
-        response.write(JSON.stringify(homeDataPop))
       } catch (error) {
         console.log(error)
       }
       response.end()
     } else if (type == '"new"') { 
+      // 发送新款数据
       try {
+        list.list = homeDataNew.list.splice((page - 1)* 30, page * 30)
+        response.write(JSON.stringify(list))
         console.log('发送homeData成功')
-        response.write(JSON.stringify(homeDataNew))
       } catch (error) {
         console.log(error)
       }
       response.end()
     } else if (type == '"sell"') {
+      // 发送热卖数据
       try {
+        list.list = homeDataSell.list.splice((page - 1)* 30, page * 30)
+        response.write(JSON.stringify(list))
         console.log('发送homeData成功')
-        response.write(JSON.stringify(homeDataSell))
       } catch (error) {
         console.log(error)
       }
