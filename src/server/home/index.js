@@ -1392,7 +1392,7 @@ Server.on('request', function (request, response) {
     if (type == '"pop"') {
       // 发送流行数据
       try {
-        list.list = homeDataPop.list.splice((page - 1)* 30, page * 30)
+        list.list = homeDataPop.list.slice((page - 1) * 30, page * 30)
         response.write(JSON.stringify(list))
         console.log('发送homeData成功')
       } catch (error) {
@@ -1402,7 +1402,7 @@ Server.on('request', function (request, response) {
     } else if (type == '"new"') { 
       // 发送新款数据
       try {
-        list.list = homeDataNew.list.splice((page - 1)* 30, page * 30)
+        list.list = homeDataNew.list.slice((page - 1) * 30, page * 30)
         response.write(JSON.stringify(list))
         console.log('发送homeData成功')
       } catch (error) {
@@ -1412,7 +1412,7 @@ Server.on('request', function (request, response) {
     } else if (type == '"sell"') {
       // 发送热卖数据
       try {
-        list.list = homeDataSell.list.splice((page - 1)* 30, page * 30)
+        list.list = homeDataSell.list.slice((page - 1) * 30, page * 30)
         response.write(JSON.stringify(list))
         console.log('发送homeData成功')
       } catch (error) {

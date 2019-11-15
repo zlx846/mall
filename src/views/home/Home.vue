@@ -3,13 +3,15 @@
     <nav-bar>
       <div slot="middle">首页</div>
     </nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll" :probeType="3" @scroll="contentScroll" :pullUpLoad="true" @pullingUp="pullingUp">
       <home-swiper :banners="banners"></home-swiper>
       <recommends :recommends="recommends"></recommends>
       <feature></feature>
       <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick"></tab-control>
       <goods-list :goods="showGoodsItem"></goods-list>
     </scroll>
+    <!-- 需要监听组件的原生事件时，必须对需要监听的事件加修饰符 -->
+    <back-top @click.native="backClick" v-show="isShow"></back-top>
   </div>
 </template>
 
@@ -22,6 +24,7 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/back-top/BackTop"
 
 import { getHomeMultiData, getHomeGoods } from "network/home";
 
@@ -36,7 +39,8 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
       },
-      currentType: "pop"
+      currentType: "pop",
+      isShow: false
     };
   },
   components: {
@@ -46,7 +50,8 @@ export default {
     Feature,
     TabControl,
     GoodsList,
-    Scroll
+    Scroll,
+    BackTop
   },
   created() {
     // 请求多个数据
@@ -55,6 +60,14 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+  },
+  mounted() {
+    // 监听图片加载完成 
+    const refresh = this.debounce(this.$refs.scroll.refresh, 500)
+    this.$bus.$on('itemImgLoad', () => {
+      refresh()
+    })
+
   },
   methods: {
     /**
@@ -90,6 +103,32 @@ export default {
         case 2:
           this.currentType = "sell";
           break;
+      }
+    },
+    // 返回顶部
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0)
+    },
+    // 控制显示返回顶部按钮
+    contentScroll(position) {
+      this.isShow = position.y < -560
+    },
+    // 上拉加载更多
+    pullingUp() {
+      this.getHomeGoods(this.currentType)
+      setTimeout(() => {
+        this.$refs.scroll.finishPullUp()
+      }, 2000);
+    },
+    // 防抖函数
+    debounce(func, delay) {
+      let timer = null
+
+      return function(...args) {
+        if(timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          func.apply(this, args)
+        }, delay);
       }
     }
   },

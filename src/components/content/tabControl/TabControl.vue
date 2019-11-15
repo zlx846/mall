@@ -1,6 +1,7 @@
 <template>
   <div class="tab-control">
-    <div v-for="(item, index) in titles" :key=index @click="itemClick(index)" :class="{'tab-control-item': true, active: index === isActive}">
+    <div v-for="(item, index) in titles" :key=index @click="itemClick(index)" 
+    :class="{'tab-control-item': true, active: index === isActive}">
       <span>{{item}}</span>
     </div>
   </div>
@@ -30,7 +31,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #home .tab-control {
     display: flex;
     text-align: center;
