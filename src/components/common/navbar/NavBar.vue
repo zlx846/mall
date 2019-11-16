@@ -31,6 +31,8 @@ export default {
   }
   .left,.right {
     width: 60px;
+    height: 100%;
+    line-height: 44px;
   }
   .middle {
     flex: 1;

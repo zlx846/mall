@@ -23,7 +23,12 @@ export default {
       this.$bus.$emit('itemImgLoad')
     },
     itemClick() {
-      this.$router.replace('/detail')
+      this.$router.push({
+        path: '/detail',
+        query: {
+          id: this.goodsItem.id
+        }
+      })
     }
   }
 }

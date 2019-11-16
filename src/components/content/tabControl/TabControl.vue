@@ -32,21 +32,21 @@ export default {
 </script>
 
 <style scoped>
-  #home .tab-control {
+.tab-control {
     display: flex;
     text-align: center;
   }
-  #home .tab-control .tab-control-item{
+.tab-control .tab-control-item{
     flex: 1;
     height: 40px;
     width: 15px;
     line-height: 40px;
     font-size: 14px;
   }
-  #home .tab-control .active {
+ .tab-control .active {
     color: var(--color-high-text);
   }
-  #home .tab-control .active span {
+ .tab-control .active span {
     border-bottom: 2px solid var(--color-tint);
     padding: 5px;
   }
