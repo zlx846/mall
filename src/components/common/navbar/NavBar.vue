@@ -23,10 +23,10 @@ export default {
     display: flex;
     height: 44px;
     line-height: 44px;
-    position: fixed;
+    /* position: fixed;
     left: 0;
     right: 0;
-    top: 0;
+    top: 0; */
     box-shadow: 0px 1.5px 2px rgba(0, 0, 0, 0.3);
   }
   .left,.right {

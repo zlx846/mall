@@ -3,11 +3,26 @@
     <nav-bar>
       <div slot="middle">首页</div>
     </nav-bar>
-    <scroll class="content" ref="scroll" :probeType="3" @scroll="contentScroll" :pullUpLoad="true" @pullingUp="pullingUp">
-      <home-swiper :banners="banners"></home-swiper>
+    <tab-control 
+        :titles="['流行', '新款', '精选']" 
+        @tabClick="tabClick" 
+        ref="tabControl1"
+        class="tab-control"
+        v-show="isShowTabControl"></tab-control>
+    <scroll
+      class="content"
+      ref="scroll"
+      :probeType="3"
+      @scroll="contentScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp">
+      <home-swiper :banners="banners" @imgLoad="swiperLoad"></home-swiper>
       <recommends :recommends="recommends"></recommends>
       <feature></feature>
-      <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick"></tab-control>
+      <tab-control 
+        :titles="['流行', '新款', '精选']" 
+        @tabClick="tabClick" 
+        ref="tabControl2"></tab-control>
       <goods-list :goods="showGoodsItem"></goods-list>
     </scroll>
     <!-- 需要监听组件的原生事件时，必须对需要监听的事件加修饰符 -->
@@ -24,23 +39,27 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
-import BackTop from "components/content/back-top/BackTop"
+import BackTop from "components/content/back-top/BackTop";
 
 import { getHomeMultiData, getHomeGoods } from "network/home";
+import { debounce } from "common/utils";
 
 export default {
   name: "Home",
   data() {
     return {
-      banners: [],
+      banners: [], // 轮播图数据
       recommends: [],
       goods: {
+        // 商品数据
         pop: { page: 0, list: [] },
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
       },
       currentType: "pop",
-      isShow: false
+      isShow: false,
+      tabControlOffsetTop: 0,
+      isShowTabControl: false 
     };
   },
   components: {
@@ -62,12 +81,11 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
-    // 监听图片加载完成 
-    const refresh = this.debounce(this.$refs.scroll.refresh, 500)
-    this.$bus.$on('itemImgLoad', () => {
-      refresh()
-    })
-
+    // 监听图片加载完成
+    const refresh = debounce(this.$refs.scroll.refresh, 50);
+    this.$bus.$on("itemImgLoad", () => {
+      refresh();
+    });
   },
   methods: {
     /**
@@ -104,32 +122,31 @@ export default {
           this.currentType = "sell";
           break;
       }
+      this.$refs.tabControl1.isActive = index
+      this.$refs.tabControl2.isActive = index
     },
     // 返回顶部
     backClick() {
-      this.$refs.scroll.scrollTo(0, 0)
+      this.$refs.scroll.scrollTo(0, 0);
     },
     // 控制显示返回顶部按钮
     contentScroll(position) {
-      this.isShow = position.y < -560
+      // 判断BackTop是否显示
+      this.isShow = position.y < -560;
+      // 决定tabcontrol是否吸顶
+      this.isShowTabControl = (-position.y) > this.tabControlOffsetTop
     },
     // 上拉加载更多
     pullingUp() {
-      this.getHomeGoods(this.currentType)
+      this.getHomeGoods(this.currentType);
       setTimeout(() => {
-        this.$refs.scroll.finishPullUp()
+        this.$refs.scroll.finishPullUp();
       }, 2000);
     },
-    // 防抖函数
-    debounce(func, delay) {
-      let timer = null
-
-      return function(...args) {
-        if(timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        }, delay);
-      }
+    // 监听轮播图加载完成并计算tabControl的offsetTop值
+    swiperLoad() {
+      this.tabControlOffsetTop = this.$refs.tabControl2.$el.offsetTop
+      console.log(this.tabControlOffsetTop)
     }
   },
   computed: {
@@ -149,12 +166,12 @@ export default {
   background-color: var(--color-tint);
   font-size: 18px;
   color: #fff;
-  z-index: 999;
+  /* z-index: 999; */
 }
-#home .tab-control {
-  background: #fff;
-  position: sticky;
-  top: 44px;
+.tab-control {
+  position: relative;
+  z-index: 9;
+  background-color: #fff;
 }
 .content {
   position: absolute;
@@ -165,8 +182,5 @@ export default {
   bottom: 49px;
   width: 100%;
 }
-/* .content {
-  height: calc(100% - 93px);
-  overflow: hidden;
-} */
+
 </style>
