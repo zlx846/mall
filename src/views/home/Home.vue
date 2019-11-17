@@ -141,7 +141,7 @@ export default {
       this.getHomeGoods(this.currentType);
       setTimeout(() => {
         this.$refs.scroll.finishPullUp();
-      }, 200);
+      }, 50);
     },
     // 监听轮播图加载完成并计算tabControl的offsetTop值
     swiperLoad() {

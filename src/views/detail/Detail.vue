@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     backClick() {
-      history.back()
+      this.$router.go(-1)
     },
     getDetail() {
       getDetail(this.$route.query.id).then(res => {
