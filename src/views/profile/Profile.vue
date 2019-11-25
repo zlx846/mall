@@ -1,12 +1,17 @@
 <template>
   <div>
-    <h2>个人</h2>
+    <login-bar></login-bar>
   </div>
 </template>
 
 <script>
+import LoginBar from "components/content/loginBar/LoginBar"
+
 export default {
-  name: 'Profile'
+  name: 'Profile',
+  components: {
+    LoginBar
+  }
 }
 </script>
 
