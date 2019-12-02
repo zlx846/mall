@@ -1,112 +1,16 @@
 <template>
-  <div class="wrapper">
-    <ul class="content">
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-      <li>列表</li>
-    </ul>
+  <div class="category">
+    <div class="left">
+      <tab-control-column :titles="['分类一','分类二']"></tab-control-column>
+    </div>
+    <div class="right"></div>
   </div>
 </template>
 
 <script>
-import BScroll from 'better-scroll'
+import TabControlColumn from "components/content/tabControlColumn/TabControlColumn"
+
+import {getAllCategory} from "network/category"
 
 export default {
   name: "Category",
@@ -114,28 +18,36 @@ export default {
     return {
     }
   },
-  mounted() {
-    const bs = new BScroll(document.querySelector('.wrapper'), {
-      probeType: 3,
-      pullUpLoad: true
-    })
-    // bs.on('scroll', (position) => {
-    //   console.log(position)
-    // })
-    bs.on('pullingUp', () => {
-      console.log('上拉加载更多')
-      setTimeout(() => {
-        bs.finishPullUp()
-      }, 2000);
-    })
+  components: {
+    TabControlColumn
+  },
+  created() {
+    this.getAllCategories()
+  },
+  methods: {
+    getAllCategories() {
+      getAllCategory().then(res => {
+        console.log(res)
+      })
+    }
   }
 };
 </script>
 
 <style scoped>
-.wrapper {
-  height: 200px;
-  background-color: red;
-  overflow: hidden;
-}
+  .category {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 49px;
+  }
+  .category .left {
+    width: 30%;
+  }
+  .category .right {
+    background-color: blue;
+    width: 70%;
+  }
 </style>

@@ -16,6 +16,8 @@ export default {
 
 <style>
   .cart {
-    background: red
+    background: var(--color-tint);
+    color: #fff;
+    font-size: 18px;
   }
 </style>

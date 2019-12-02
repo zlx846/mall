@@ -2,11 +2,12 @@
   <div class="login">
     <header>欢迎来到我的商城</header>
     <div class="loginItem">
-      <input type="text" placeholder="请输入用户名" v-model="user.id">
+      <input type="text" placeholder="请输入用户名" v-model="user.id" @focus="inputFocus">
     </div>
     <div class="loginItem">
-      <input type="password" placeholder="请输入密码" v-model="user.password">
+      <input type="password" placeholder="请输入密码" v-model="user.password" @focus="inputFocus">
     </div>
+    <div class="validator" v-show="isShowMessage">用户名或密码错误</div>
     <div class="buttonItem">
       <button @click="loginClick">登录</button>
       <button>注册</button>
@@ -22,18 +23,27 @@ export default {
       user: {
         id: '',
         password: ''
-      }
+      },
+      isLoginSuccess: false,
+      isShowMessage: false
     }
   },
   methods: {
     loginClick() {
       confirmUser(this.user.id, this.user.password).then((res) => {
-        if (res.data === 'success') {
-          this.isLoginSuccess = true
+        if (res.data === 'fail') {
+          this.isShowMessage = true
         }else {
-          window.alert('登录失败')
+          this.isLoginSuccess = true
+          this.$store.state.profile.headImage = res.data.headImage
+          this.$store.state.profile.isLogin = true
+          this.$store.state.profile.userId = this.user.id
+          this.$router.replace("/profile")
         }
       })
+    },
+    inputFocus() {
+      this.isShowMessage = false
     }
   }
 }
@@ -55,6 +65,7 @@ header{
   left: 0;
   right: 0;
   top: 20%;
+  height: 50%;
 }
 .login .loginItem {
   width: 100%;
@@ -67,6 +78,12 @@ header{
   border: none;
   border-bottom: 2px solid #999;
   outline: none
+}
+.login .buttonItem {
+  position: absolute;
+  bottom: 25%;
+  left: 0;
+  right: 0;
 }
 .login button{
   outline: none;
@@ -82,5 +99,8 @@ header{
 }
 .login button:hover{
   background-color: #ffc3ce;
+}
+.login .validator {
+  color: var(--color-high-text);
 }
 </style>

@@ -78,9 +78,12 @@ server.on("request", (req, res) => {
       id: 'zlx846',
       password: 'xingxing'
     }
+    const UserInfo = {
+      headImage: "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2857237103,4249004952&fm=26&gp=0.jpg"
+    }
     const netUser = JSON.parse(params.user)
     if (netUser.id === user.id && netUser.password === user.password) {
-      res.write("success")
+      res.write(JSON.stringify(UserInfo))
       console.log('账户验证成功')
       res.end()
     } else { 
@@ -88,6 +91,15 @@ server.on("request", (req, res) => {
       console.log('账户验证失败')
       res.end()
     }
+  }
+    
+  // 请求分类数据 
+  else if (urlPath === "/category") {
+    const category = {
+
+    }
+    res.write('success')
+    res.end()
   }
   // 失败
   else {

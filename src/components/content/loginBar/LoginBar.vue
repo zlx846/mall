@@ -1,8 +1,8 @@
 <template>
   <div class="loginBar">
     <header>
-      <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2857237103,4249004952&fm=26&gp=0.jpg" class="headImage" />
-      <div @click="loginClick">登录/注册</div>
+      <img :src="$store.state.profile.headImage" class="headImage" />
+      <div @click="loginClick">{{$store.state.profile.userId}}</div>
     </header>
   </div>
 </template>
@@ -11,8 +11,10 @@
 export default {
   methods: {
     loginClick() {
-      console.log("登录")
-      this.$router.replace("/login")
+      if (this.$store.state.profile.isLogin === false) {
+        this.$router.replace("/login")
+      }
+      // this.$router.replace("/login")
     }
   }
 };
@@ -22,7 +24,7 @@ export default {
 .loginBar header {
   display: flex;
   height: 80px;
-  background-color: red;
+  background-color: var(--color-tint);
   line-height: 80px;
   padding-left: 15px;
 }

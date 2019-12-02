@@ -5,6 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    profile: {
+      isLogin: false,
+      headImage: "",
+      userId: "登录/注册"
+    }
   },
   mutations: {
   },
